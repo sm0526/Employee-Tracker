@@ -315,6 +315,50 @@ function changeEmployeeRole() {
                 });
         })
 }
+
+function changeEmployeeManager() {
+    db.findAllEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee's manager do you want to update?",
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => {
+                    let employeeId = res.employeeId
+                    db.findAllPossibleManagers(employeeId)
+                        .then(([rows]) => {
+                            let managers = rows;
+                            const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+                                name: `${first_name} ${last_name}`,
+                                value: id
+                            }));
+
+                            prompt([
+                                {
+                                    type: "list",
+                                    name: "managerId",
+                                    message:
+                                        "Which employee do you want to set as manager for the selected employee?",
+                                    choices: managerChoices
+                                }
+                            ])
+                                .then(res => db.changeEmployeeManager(employeeId, res.managerId))
+                                .then(() => console.log("Updated employee's manager"))
+                                .then(() => loadBasePromptList())
+                        })
+                })
+        })
+}
 //3 more here: view employee roles, adding a role, and deleteing a role. Roles will need an id, name/title, salary, and department id.
 
 //a final 3 here: view departments, add a department and deleting a department. Departments will need an id and a name.
