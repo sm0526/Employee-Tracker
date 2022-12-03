@@ -1,4 +1,5 @@
 const { prompt } = require("inquirer");
+const { QueryInterface } = require("sequelize");
 const db = require("./db");
 require("console.table");
 
@@ -74,7 +75,52 @@ function loadBasePromptList() {
                 }
             ]
         }
-    ])//need to build how to take in the choices and will need a function for each 
+    ]).then(res => {
+        let selection = res.selection;
+        switch (selection) {
+            case "VIEW_EMPLOYEES":
+                viewEmployees();
+                break;
+            case "VIEW_EMPLOYEES_BY_DEPARTMENT":
+                viewEmployeesByDepartment();
+                break;
+            case "VIEW_EMPLOYEES_BY_MANAGER":
+                viewEmployeesByManager();
+                break;
+            case "ADD_EMPLOYEE":
+                addEmployee();
+                break;
+            case "DELETE_EMPLOYEE":
+                deleteEmployee();
+                break;
+            case "CHANGE_EMPLOYEE_ROLE":
+                changeEmployeeRole();
+                break;
+            case "CHANGE_EMPLOYEE_MANAGER":
+                changeEmployeeManager();
+                break;
+            case "VIEW_ALL_EMPLOYEE_ROLES":
+                viewAllEmployeeRoles();
+                break;
+            case "ADD_ROLE":
+                addRole();
+                break;
+            case "DELETE_ROLE":
+                deleteRole();
+                break;
+            case "VIEW_ALL_DEPARTMENTS":
+                viewAllDepartments();
+                break;
+            case "ADD_DEPARTMENT":
+                addDepartment();
+                break;
+            case "DELETE_DEPARTMENT":
+                deleteDepartment();
+                break;
+            case "QUIT":
+                quit();
+        }
+    })
 }
 
 //need functions
