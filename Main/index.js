@@ -44,7 +44,34 @@ function loadBasePromptList() {
                     name: "Change Employee Manager",
                     value: "CHANGE_EMPLOYEE_MANAGER"
                 },
-                
+                {
+                    name: "View All Employee Roles",
+                    value: "VIEW_ALL_EMPLOYEE_ROLES"
+                },
+                {
+                    name: "Add Role",
+                    value: "ADD_ROLE"
+                },
+                {
+                    name: "Delete Role",
+                    value: "DELETE_ROLE"
+                },
+                {
+                    name: "View All Departments",
+                    value: "VIEW_ALL_DEPARTMENTS"
+                },
+                {
+                    name: "Add Department",
+                    value: "ADD_DEPARTMENT"
+                },
+                {
+                    name: "Delete Department",
+                    value: "DELETE_DEPARTMENT"
+                },
+                {
+                    name: "Quit",
+                    value: "QUIT"
+                }
             ]
         }
     ])//need to build how to take in the choices and will need a function for each 
