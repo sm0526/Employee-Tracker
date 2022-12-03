@@ -402,4 +402,28 @@ function addRole() {
                 })
         })
 }
+
+function deleteRole() {
+    db.findAllRoles()
+        .then(([rows]) => {
+            let roles = rows;
+            const roleChoices = roles.map(({ id, title }) => ({
+                name: title,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "roleId",
+                    message:
+                        "Which role do you want to remove? (Warning: This will also remove employees)",
+                    choices: roleChoices
+                }
+            ])
+                .then(res => db.deleteRole(res.roleId))
+                .then(() => console.log("Removed role from the database"))
+                .then(() => loadBasePromptList())
+        })
+}
 //a final 3 here: view departments, add a department and deleting a department. Departments will need an id and a name.
