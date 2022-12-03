@@ -474,4 +474,7 @@ function deleteDepartment() {
       })
   }
 
-  
+  function quit() {
+    console.log("Have a good day!");
+    process.exit();
+  }
