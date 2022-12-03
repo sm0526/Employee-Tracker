@@ -273,7 +273,48 @@ function deleteEmployee() {
         })
 }
 
+function changeEmployeeRole() {
+    db.findAllEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
 
+            prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee's role do you want to update?",
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => {
+                    let employeeId = res.employeeId;
+                    db.findAllRoles()
+                        .then(([rows]) => {
+                            let roles = rows;
+                            const roleChoices = roles.map(({ id, title }) => ({
+                                name: title,
+                                value: id
+                            }));
+
+                            prompt([
+                                {
+                                    type: "list",
+                                    name: "roleId",
+                                    message: "Which role do you want to assign the selected employee?",
+                                    choices: roleChoices
+                                }
+                            ])
+                                .then(res => db.changeEmployeeRole(employeeId, res.roleId))
+                                .then(() => console.log("Updated employee's role"))
+                                .then(() => loadBasePromptList())
+                        });
+                });
+        })
+}
 //3 more here: view employee roles, adding a role, and deleteing a role. Roles will need an id, name/title, salary, and department id.
 
 //a final 3 here: view departments, add a department and deleting a department. Departments will need an id and a name.
