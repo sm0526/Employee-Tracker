@@ -360,5 +360,14 @@ function changeEmployeeManager() {
         })
 }
 //3 more here: view employee roles, adding a role, and deleteing a role. Roles will need an id, name/title, salary, and department id.
+function viewAllEmployeeRoles() {
+    db.findAllRoles()
+      .then(([rows]) => {
+        let roles = rows;
+        console.log("\n");
+        console.table(roles);
+      })
+      .then(() => loadBasePromptList());
+}
 
 //a final 3 here: view departments, add a department and deleting a department. Departments will need an id and a name.
