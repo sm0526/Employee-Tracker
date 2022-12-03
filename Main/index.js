@@ -436,3 +436,19 @@ function viewAllDepartments() {
         })
         .then(() => loadBasePromptList());
 }
+
+function addDepartment() {
+    prompt([
+        {
+            name: "name",
+            message: "What is the name of the department you will be adding?"
+        }
+    ])
+        .then(res => {
+            let name = res;
+            db.createDepartment(name)
+                .then(() => console.log(`Added ${name.name} to the database`))
+                .then(() => loadBasePromptList())
+        })
+}
+
