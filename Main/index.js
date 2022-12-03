@@ -362,12 +362,44 @@ function changeEmployeeManager() {
 //3 more here: view employee roles, adding a role, and deleteing a role. Roles will need an id, name/title, salary, and department id.
 function viewAllEmployeeRoles() {
     db.findAllRoles()
-      .then(([rows]) => {
-        let roles = rows;
-        console.log("\n");
-        console.table(roles);
-      })
-      .then(() => loadBasePromptList());
+        .then(([rows]) => {
+            let roles = rows;
+            console.log("\n");
+            console.table(roles);
+        })
+        .then(() => loadBasePromptList());
 }
 
+function addRole() {
+    db.findAllDepartments()
+        .then(([rows]) => {
+            let departments = rows;
+            const departmentChoices = departments.map(({ id, name }) => ({
+                name: name,
+                value: id
+            }));
+
+            prompt([
+                {
+                    name: "title",
+                    message: "What is the name of the role?"
+                },
+                {
+                    name: "salary",
+                    message: "What is the salary of the role?"
+                },
+                {
+                    type: "list",
+                    name: "department_id",
+                    message: "Which department does the role belong to?",
+                    choices: departmentChoices
+                }
+            ])
+                .then(role => {
+                    db.createRole(role)
+                        .then(() => console.log(`Added ${role.title} to the database`))
+                        .then(() => loadBasePromptList())
+                })
+        })
+}
 //a final 3 here: view departments, add a department and deleting a department. Departments will need an id and a name.
