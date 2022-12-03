@@ -12,6 +12,40 @@ function loadBasePromptList() {
     prompt([
         {
             //need prompts for what to do to start: viewing employees(and how-by department or by management or just all). adding and removing employees. being able to edit employees(adding/removing roles). need to be able to see available employee roles and to edit those(add or remove). need to be able to see available departments and to edit those(add or remove).
+            type: "list",
+            name: "choice",
+            message: "What do yo want to do?",
+            choices: [
+                {
+                    name: "View All Employees",
+                    value: "VIEW_EMPLOYEES"
+                },
+                {
+                    name: "View Employees by Department",
+                    value: "VIEW_EMPLOYEES_BY_DEPARTMENT"
+                },
+                {
+                    name: "View Employees by Manager",
+                    value: "VIEW_EMPLOYEES_BY_MANAGER"
+                },
+                {
+                    name: "Add Employee",
+                    value: "ADD_EMPLOYEE"
+                },
+                {
+                    name: "Delete Employee",
+                    value: "DELETE_EMPLOYEE"
+                },
+                {
+                    name: "Change Employee Role",
+                    value: "CHANGE_EMPLOYEE_ROLE"
+                },
+                {
+                    name: "Change Employee Manager",
+                    value: "CHANGE_EMPLOYEE_MANAGER"
+                },
+                
+            ]
         }
     ])//need to build how to take in the choices and will need a function for each 
 }
