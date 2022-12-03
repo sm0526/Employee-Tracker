@@ -126,70 +126,70 @@ function loadBasePromptList() {
 //view employees ->need 3 functions here one for each way to view the employees
 function viewEmployees() {
     db.findAllEmployees()
-    .then(([rows]) => {
-        let employees = rows;
-        console.log("\n");
-        console.table(employees);
-    })
-    .then(() => loadBasePromptList());
+        .then(([rows]) => {
+            let employees = rows;
+            console.log("\n");
+            console.table(employees);
+        })
+        .then(() => loadBasePromptList());
 }
 
 function viewEmployeesByDepartment() {
     db.findAllDepartments()
-    .then(([rows]) => {
-        let departments = rows;
-        const departmentChoices = departments.map(({ id, name }) => ({
-            name: name,
-            value: id
-        }));
-        prompt([
-            {
-                type: "list",
-                name: "departmentId",
-                message: "For what department would you like to see the list of employees?",
-                choices: departmentChoices
-            }
-        ])
-            .then(res => db.findAllEmployeesByDepartment(res.departmentId))
-            .then(([rows]) => {
-                let employees = rows;
-                console.log("\n");
-                console.table(employees);
-            })
-            .then(() => loadBasePromptList())
-    });      
+        .then(([rows]) => {
+            let departments = rows;
+            const departmentChoices = departments.map(({ id, name }) => ({
+                name: name,
+                value: id
+            }));
+            prompt([
+                {
+                    type: "list",
+                    name: "departmentId",
+                    message: "For what department would you like to see the list of employees?",
+                    choices: departmentChoices
+                }
+            ])
+                .then(res => db.findAllEmployeesByDepartment(res.departmentId))
+                .then(([rows]) => {
+                    let employees = rows;
+                    console.log("\n");
+                    console.table(employees);
+                })
+                .then(() => loadBasePromptList())
+        });
 }
 
 function viewEmployeesByManager() {
     db.findAllEmployees()
-    .then(([rows]) => {
-        let managers = rows;
-        const managerChoices = managers.map(({ id, first_name, last_name }) => ({
-            name: `${first_name} ${last_name}`,
-            value: id
-        }));
-        prompt([
-            {
-                type: "list",
-                name: "managerId",
-                message: "Select a manager to see their employee list",
-                choices: managerChoices
-            }
-        ])
-            .then(res => db.findAllEmployeesByManager(res.managerId))
-            .then(([rows]) => {
-                let employees = rows;
-                console.log("\n");
-                if (employees.length === 0) {
-                    console.log("This employee does not manage anyone");
-                } else {
-                    console.table(employees);
+        .then(([rows]) => {
+            let managers = rows;
+            const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+            prompt([
+                {
+                    type: "list",
+                    name: "managerId",
+                    message: "Select a manager to see their employee list",
+                    choices: managerChoices
                 }
-            })
-            .then(() => loadBasePromptList())
-    });
+            ])
+                .then(res => db.findAllEmployeesByManager(res.managerId))
+                .then(([rows]) => {
+                    let employees = rows;
+                    console.log("\n");
+                    if (employees.length === 0) {
+                        console.log("This employee does not manage anyone");
+                    } else {
+                        console.table(employees);
+                    }
+                })
+                .then(() => loadBasePromptList())
+        });
 }
-//3 more functions: need a function to add an employee and another to remove one. Also need a funciton to edit the employee's role and one to edit the employee's manager. Employees will need an id, first name, last name, role id and manager id.
+//4 more functions: need a function to add an employee and another to remove one. Also need a funciton to edit the employee's role and one to edit the employee's manager. Employees will need an id, first name, last name, role id and manager id.
 function addEmployee() {
     prompt([
         {
@@ -220,33 +220,56 @@ function addEmployee() {
                         .then(res => {
                             let roleId = res.roleId;
                             db.findAllEmployees()
-                              .then(([rows]) => {
-                                let employees = rows;
-                                const managerChoices = employees.map(({ id, first_name, last_name }) => ({
-                                    name: `${first_name} ${last_name}`,
-                                    value: id
-                                }));
-                                managerChoices.unshift({ name: "None", value: null });
-                                prompt({
-                                    type: "list",
-                                    name: "managerId",
-                                    message: "Who is the employee's manager?",
-                                    choices: managerChoices
-                                })
-                                    .then(res => {
-                                        let employee = {
-                                            manager_id: res.managerId,
-                                            role_id: roleId,
-                                            first_name: firstName,
-                                            last_name: lastName
-                                        }
-                                        db.createEmployee(employee);
+                                .then(([rows]) => {
+                                    let employees = rows;
+                                    const managerChoices = employees.map(({ id, first_name, last_name }) => ({
+                                        name: `${first_name} ${last_name}`,
+                                        value: id
+                                    }));
+                                    managerChoices.unshift({ name: "None", value: null });
+                                    prompt({
+                                        type: "list",
+                                        name: "managerId",
+                                        message: "Who is the employee's manager?",
+                                        choices: managerChoices
                                     })
-                                    .then(() => console.log(`Added ${firstName} ${lastName} to the database`))
-                                    .then(() => loadBasePromptList())
-                              })
+                                        .then(res => {
+                                            let employee = {
+                                                manager_id: res.managerId,
+                                                role_id: roleId,
+                                                first_name: firstName,
+                                                last_name: lastName
+                                            }
+                                            db.createEmployee(employee);
+                                        })
+                                        .then(() => console.log(`Added ${firstName} ${lastName} to the database`))
+                                        .then(() => loadBasePromptList())
+                                })
                         })
                 })
+        })
+}
+
+function deleteEmployee() {
+    db.findAllEmployees()
+        .then(([rows]) => {
+            let employees = rows;
+            const employeeChoices = employees.map(({ id, first_name, last_name }) => ({
+                name: `${first_name} ${last_name}`,
+                value: id
+            }));
+
+            prompt([
+                {
+                    type: "list",
+                    name: "employeeId",
+                    message: "Which employee do you want to delete?",
+                    choices: employeeChoices
+                }
+            ])
+                .then(res => db.deleteEmployee(res.employeeId))
+                .then(() => console.log("Deleted employee from the database"))
+                .then(() => loadBasePromptList())
         })
 }
 
