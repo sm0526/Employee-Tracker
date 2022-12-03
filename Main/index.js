@@ -160,7 +160,35 @@ function viewEmployeesByDepartment() {
     });      
 }
 
-
+function viewEmployeesByManager() {
+    db.findAllEmployees()
+    .then(([rows]) => {
+        let managers = rows;
+        const managerChoices = managers.map(({ id, first_name, last_name }) => ({
+            name: `${first_name} ${last_name}`,
+            value: id
+        }));
+        prompt([
+            {
+                type: "list",
+                name: "managerId",
+                message: "Select a manager to see their employee list",
+                choices: managerChoices
+            }
+        ])
+            .then(res => db.findAllEmployeesByManager(res.managerId))
+            .then(([rows]) => {
+                let employees = rows;
+                console.log("\n");
+                if (employees.length === 0) {
+                    console.log("This employee does not manage anyone");
+                } else {
+                    console.table(employees);
+                }
+            })
+            .then(() => loadBasePromptList())
+    });
+}
 //3 more functions: need a function to add an employee and another to remove one. Also need a funciton to edit the employee's role and one to edit the employee's manager. Employees will need an id, first name, last name, role id and manager id.
 
 
