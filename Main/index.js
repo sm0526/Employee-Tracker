@@ -12,7 +12,6 @@ function start() {
 function loadBasePromptList() {
     prompt([
         {
-            //need prompts for what to do to start: viewing employees(and how-by department or by management or just all). adding and removing employees. being able to edit employees(adding/removing roles). need to be able to see available employee roles and to edit those(add or remove). need to be able to see available departments and to edit those(add or remove).
             type: "list",
             name: "choice",
             message: "What do yo want to do?",
