@@ -452,3 +452,26 @@ function addDepartment() {
         })
 }
 
+function deleteDepartment() {
+    db.findAllDepartments()
+      .then(([rows]) => {
+        let departments = rows;
+        const departmentChoices = departments.map(({ id, name }) => ({
+          name: name,
+          value: id
+        }));
+  
+        prompt({
+          type: "list",
+          name: "departmentId",
+          message:
+            "Which department would you like to delete? (Warning: This will also delete associated roles and employees)",
+          choices: departmentChoices
+        })
+          .then(res => db.deleteDepartment(res.departmentId))
+          .then(() => console.log(`Removed department from the database`))
+          .then(() => loadBasePromptList())
+      })
+  }
+
+  
