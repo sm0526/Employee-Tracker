@@ -427,3 +427,12 @@ function deleteRole() {
         })
 }
 //a final 3 here: view departments, add a department and deleting a department. Departments will need an id and a name.
+function viewAllDepartments() {
+    db.findAllDepartments()
+        .then(([rows]) => {
+            let departments = rows;
+            console.log("\n");
+            console.table(departments);
+        })
+        .then(() => loadBasePromptList());
+}
