@@ -124,6 +124,15 @@ function loadBasePromptList() {
 
 //need functions
 //view employees ->need 3 functions here one for each way to view the employees
+function viewEmployees() {
+    db.findAllEmployees()
+    .then(([rows]) => {
+        let employees = rows;
+        console.log("\n");
+        console.table(employees);
+    })
+    .then(() => loadBasePromptList());
+}
 
 //3 more functions: need a function to add an employee and another to remove one. Also need a funciton to edit the employee's role and one to edit the employee's manager. Employees will need an id, first name, last name, role id and manager id.
 
