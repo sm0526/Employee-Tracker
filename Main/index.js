@@ -134,7 +134,35 @@ function viewEmployees() {
     .then(() => loadBasePromptList());
 }
 
+function viewEmployeesByDepartment() {
+    db.findAllDepartments()
+    .then(([rows]) => {
+        let departments = rows;
+        const departmentChoices = departments.map(({ id, name }) => ({
+            name: name,
+            value: id
+        }));
+        prompt([
+            {
+                type: "list",
+                name: "departmentId",
+                message: "For what department would you like to see the list of employees?",
+                choices: departmentChoices
+            }
+        ])
+            .then(res => db.findAllEmployeesByDepartment(res.departmentId))
+            .then(([rows]) => {
+                let employees = rows;
+                console.log("\n");
+                console.table(employees);
+            })
+            .then(() => loadBasePromptList())
+    });      
+}
+
+
 //3 more functions: need a function to add an employee and another to remove one. Also need a funciton to edit the employee's role and one to edit the employee's manager. Employees will need an id, first name, last name, role id and manager id.
+
 
 //3 more here: view employee roles, adding a role, and deleteing a role. Roles will need an id, name/title, salary, and department id.
 
