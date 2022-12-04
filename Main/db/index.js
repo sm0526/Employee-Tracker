@@ -42,10 +42,24 @@ class DB {
         return this.connection.promise().query("INSERT INTO employee SET ?", employee);
     }
 
-    deleteEmployee(employeeID) {
+    deleteEmployee(employeeId) {
         return this.connection.promise().query(
             "DELETE FROM employee WHERE id = ?",
-            employeeID
+            employeeId
+        );
+    }
+
+    updateEmployeeRole(employeeId, roleId) {
+        return this.connection.promise().query(
+            "UPDATE employee SET role_id = ? WHERE id = ?",
+            [employeeId, roleId]
+        );
+    }
+
+    updateEmployeeManager(employeeId, managerId) {
+        return this.connection.promise().query(
+            "UPDATE employee SET manager_id = ? WHERE id = ?",
+            [employeeId, managerId]
         );
     }
 }
