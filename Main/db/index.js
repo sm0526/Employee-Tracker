@@ -76,6 +76,14 @@ class DB {
     deleteRole(roleId) {
         return this.connection.promise().query("DELETE FROM role WHERE id = ?", roleId);
     }
+
+    createDepartment(department) {
+        return this.connection.promise().query("INSERT INTO department SET ?", department);
+    }
+
+    deleteDepartment(departmentId) {
+        return this.connection.promise().query("DELETE FROM department WHERE id = ?", departmentId);
+    }
 }
 
 module.exports = new DB(connection);
