@@ -37,6 +37,17 @@ class DB {
             departmentId
         );
     }
+
+    createEmployee(employee) {
+        return this.connection.promise().query("INSERT INTO employee SET ?", employee);
+    }
+
+    deleteEmployee(employeeID) {
+        return this.connection.promise().query(
+            "DELETE FROM employee WHERE id = ?",
+            employeeID
+        );
+    }
 }
 
 module.exports = new DB(connection);
