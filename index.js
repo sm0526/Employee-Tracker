@@ -308,7 +308,7 @@ function changeEmployeeRole() {
                                     choices: roleChoices
                                 }
                             ])
-                                .then(res => db.changeEmployeeRole(employeeId, res.roleId))
+                                .then(res => db.updateEmployeeRole(employeeId, res.roleId))
                                 .then(() => console.log("Updated employee's role"))
                                 .then(() => loadBasePromptList())
                         });
@@ -352,7 +352,7 @@ function changeEmployeeManager() {
                                     choices: managerChoices
                                 }
                             ])
-                                .then(res => db.changeEmployeeManager(employeeId, res.managerId))
+                                .then(res => db.updateEmployeeManager(employeeId, res.managerId))
                                 .then(() => console.log("Updated employee's manager"))
                                 .then(() => loadBasePromptList())
                         })
