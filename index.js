@@ -1,5 +1,4 @@
 const { prompt } = require("inquirer");
-const { QueryInterface } = require("sequelize");
 const db = require("./db");
 require("console.table");
 
@@ -13,7 +12,7 @@ function loadBasePromptList() {
     prompt([
         {
             type: "list",
-            name: "choice",
+            name: "selection",
             message: "What do yo want to do?",
             choices: [
                 {
@@ -74,7 +73,8 @@ function loadBasePromptList() {
                 }
             ]
         }
-    ]).then(res => {
+    ])
+    .then(res => {
         let selection = res.selection;
         switch (selection) {
             case "VIEW_EMPLOYEES":
